@@ -1,128 +1,113 @@
-import React from 'react';
-import { Grid, Box, Paper, Typography } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People'; // Icon for Total Count
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Icon for Active Count
-import CancelIcon from '@mui/icons-material/Cancel'; // Icon for Inactive Count
-import DownloadIcon from '@mui/icons-material/Download'; // Icon for the download button
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // Icon for the heart
+import * as React from 'react';
+import { Grid, Paper, Box, Typography, Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import SvgIcon from '@mui/material/SvgIcon';
 
-const Item = styled(Paper)(({ theme }) => ({
-  background: `linear-gradient(135deg, ${
-    theme.palette.mode === 'dark' ? '#3b82f6' : '#e0f7fa'
-  } 0%, ${theme.palette.mode === 'dark' ? '#1e40af' : '#b3e5fc'} 100%)`,
-  borderRadius: '8px',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  color: theme.palette.text.primary,
-  position: 'relative',
-  overflow: 'hidden',
-  transition: 'transform 0.2s',
-  border: '1px solid rgba(0,0,0,0.1)',
+// Custom icon
+function CustomIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path
+        d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </SvgIcon>
+  );
+}
+
+// Styled Material UI Card
+const StyledCard = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  borderRadius: '12px',
+  padding: theme.spacing(1),
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  minHeight: '120px',
+  minWidth: '210px',
+  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
   '&:hover': {
-    transform: 'scale(1.02)',
-  },
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(1.5),
+    transform: 'translateY(-2px)',
+    boxShadow: '0 6px 16px rgba(0,0,0,0.1)',
   },
 }));
 
-const BoxWithIcon = ({
-  totalCount,
-  activeCount,
-  inactiveCount,
-  link,
-  iconColor = '#0288d1', // Blue shade matching the image
-  title,
-}) => {
+const BoxWithIcon = ({ link = '#', title = 'Card Title' }) => {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Link to={link} style={{ textDecoration: 'none' }}>
-        <Item
-          sx={{
-            width: '100%',
-            minWidth: '230px',
-            margin: 'auto',
-          }}
-        >
-          {/* Heart Icon in Top-Right */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-            }}
-          >
-            <FavoriteBorderIcon sx={{ fontSize: 20, color: '#f44336' }} />
-          </Box>
-
-          {/* Title */}
-          <Typography
-            sx={{
-              fontWeight: 600,
-              fontSize: { xs: '14px', sm: '16px' },
-              mb: 1.5,
-              color: '#01579b', // Darker blue for title
-              fontFamily: '"Roboto", sans-serif',
-            }}
-          >
-            {title}
-          </Typography>
-
-          {/* Stats and Download Icon */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              px: { xs: 1, sm: 2 },
-            }}
-          >
-            {/* Stats (Total, Active, Inactive) */}
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                textAlign: 'left',
-                fontSize: { xs: '12px', sm: '13px' },
-                fontWeight: 500,
-                color: '#01579b', // Darker blue for text
-                gap: '8px',
-                fontFamily: '"Roboto", sans-serif',
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <PeopleIcon sx={{ color: iconColor, fontSize: '20px' }} />
-                <span>Total Count: {totalCount}</span>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CheckCircleIcon sx={{ color: iconColor, fontSize: '20px' }} />
-                <span>Active Count: {activeCount}</span>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <CancelIcon sx={{ color: iconColor, fontSize: '20px' }} />
-                <span>Inactive Count: {inactiveCount}</span>
+        <StyledCard>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box position="relative" display="inline-flex" mr={1.5}>
+              <CircularProgress
+                variant="determinate"
+                value={20}
+                size={34}
+                thickness={4}
+                color="inherit"
+              />
+              <Box
+                sx={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  position: 'absolute',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CustomIcon fontSize="inherit" />
               </Box>
             </Box>
 
-            {/* Download Icon in Circular Button */}
-            <Box
-              sx={{
-                backgroundColor: '#0288d1', // Blue background for the button
-                borderRadius: '50%',
-                p: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-              }}
-            >
-              <DownloadIcon sx={{ color: '#fff', fontSize: '24px' }} />
+            <Box>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: '#FFB74D', 
+                  fontWeight: 'bold', 
+                  fontSize: '1.1rem',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.2)', 
+                  letterSpacing: '0.02em',
+                  textTransform: 'capitalize',
+                }}
+              >
+                {title}
+              </Typography>
+
+              <Typography variant="h6" fontWeight={600} sx={{ fontSize: '1.1rem' }}>
+                $432.6M
+              </Typography>
             </Box>
           </Box>
-        </Item>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1.5 }}>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ color: 'inherit', borderRadius: '18px', borderColor: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', px: 1, textTransform: 'none' }}
+            >
+              Watchlist
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              sx={{ fontSize: '0.7rem', borderRadius: '18px', px: 1.2, textTransform: 'none' }}
+            >
+              Breakdown
+            </Button>
+          </Box>
+        </StyledCard>
       </Link>
     </Grid>
   );
